@@ -1,0 +1,19 @@
+{
+  "name": "fumblr",
+  "version": "1.0.0",
+  "description": "MERN tumblr clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/impomales/fumblr.git"
+  },
+  "author": "Isaias M. Pomales",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/impomales/fumblr/issues"
+  },
+  "homepage": "https://github.com/impomales/fumblr#readme"
+}

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "babel src --presets react,env --out-dir static",
+    "watch": "babel src --presets react,env --out-dir static --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

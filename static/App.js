@@ -5,7 +5,7 @@ var node = document.getElementById('app');
 var NavBar = function NavBar(props) {
 	return React.createElement(
 		"div",
-		null,
+		{ id: "navBar" },
 		React.createElement(
 			"ul",
 			null,

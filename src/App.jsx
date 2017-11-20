@@ -1,7 +1,7 @@
 const node = document.getElementById('app');
 
 const NavBar = (props) => (
-	<div>
+	<div id="navBar">
 		<ul>
 			<li><h1>F</h1></li>
 			<li><input type="text" name="search" placeholder="Search..." /></li>

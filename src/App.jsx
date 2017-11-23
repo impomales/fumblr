@@ -17,9 +17,9 @@ const posts = [
 
 const NavBar = (props) => (
 	<div id="navBar">
+		<img id="logo" src="./photos/fumblr.png" alt="logo" />
+		<input id="search" type="text" name="search" placeholder="Search Fumblr" />
 		<ul>
-			<li><h1>F</h1></li>
-			<li><input type="text" name="search" placeholder="Search..." /></li>
 			<li>Dashboard</li>
 			<li>Explore</li>
 			<li>Messages</li>
@@ -28,11 +28,12 @@ const NavBar = (props) => (
 			<li>Account</li>
 			<li>Make a post</li>
 		</ul>
+		<div className="clearBoth"></div>
 	</div>
 );
 
 const AddPost = (props) => (
-	<div>
+	<div className="panel">
 		<form>
 			<input type="text" name="title" placeholder="Title" />
 		{/* this will vary depending on post type */}
@@ -46,7 +47,7 @@ const AddPost = (props) => (
 );
 
 const Post = (props) => (
-	<div>
+	<div className="panel">
 		<div>
 			<p>...username here...</p>
 		</div>

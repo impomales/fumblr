@@ -17,23 +17,11 @@ var NavBar = function NavBar(props) {
 	return React.createElement(
 		"div",
 		{ id: "navBar" },
+		React.createElement("img", { id: "logo", src: "./photos/fumblr.png", alt: "logo" }),
+		React.createElement("input", { id: "search", type: "text", name: "search", placeholder: "Search Fumblr" }),
 		React.createElement(
 			"ul",
 			null,
-			React.createElement(
-				"li",
-				null,
-				React.createElement(
-					"h1",
-					null,
-					"F"
-				)
-			),
-			React.createElement(
-				"li",
-				null,
-				React.createElement("input", { type: "text", name: "search", placeholder: "Search..." })
-			),
 			React.createElement(
 				"li",
 				null,
@@ -69,14 +57,15 @@ var NavBar = function NavBar(props) {
 				null,
 				"Make a post"
 			)
-		)
+		),
+		React.createElement("div", { className: "clearBoth" })
 	);
 };
 
 var AddPost = function AddPost(props) {
 	return React.createElement(
 		"div",
-		null,
+		{ className: "panel" },
 		React.createElement(
 			"form",
 			null,
@@ -101,7 +90,7 @@ var AddPost = function AddPost(props) {
 var Post = function Post(props) {
 	return React.createElement(
 		"div",
-		null,
+		{ className: "panel" },
 		React.createElement(
 			"div",
 			null,

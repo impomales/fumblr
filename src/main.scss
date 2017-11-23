@@ -1,8 +1,38 @@
+$tumblr-blue: #35465c;
+$search-blue: #1f2a38;
+
+body {
+	background-color: $tumblr-blue;
+	font-family: sans-serif;
+}
+
 #navBar {
+	height: 75px;
+	border-bottom: 2px white solid;
+	margin-bottom: 20px;
+
+	#logo {
+		margin: 0px;
+		padding: 5px;
+	}
+	#search {
+		position: relative;
+		left: 10px;
+		top: -30px;
+		background-color: #1f2a38;
+		border: none;
+		padding: 5px;
+		height: 25px;
+		width: 45%;
+		max-width: 500px;
+	}
 	ul {
+		color: white;
+		position: relative;
+		top: 5px;
+		float: right;
 		list-style-type: none;
-		padding: 0;
-		margin: 0;
+		width: 45%;
 
 		li, h1 {
 			display: inline;
@@ -10,4 +40,17 @@
 			padding-right: 5px;
 		}
 	}
+}
+
+.panel {
+	background-color: white;
+	border-radius: 5px;
+	padding: 20px;
+	margin: 20px;
+	width: 50%;
+	box-shadow: 0px 1px 2px 1px black;
+}
+
+.clearBoth {
+	clear: both;
 }

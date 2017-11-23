@@ -4,6 +4,7 @@
   "description": "MERN tumblr clone",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon -w server.js server.js",
     "sass": "sass --watch src/main.scss:static/main.css",
     "compile": "babel src --presets react,env --out-dir static",
     "watch": "babel src --presets react,env --out-dir static --watch",
@@ -25,6 +26,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1"
+    "babel-preset-react": "^6.24.1",
+    "nodemon": "^1.12.1"
   }
 }

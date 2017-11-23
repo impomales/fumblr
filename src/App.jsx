@@ -1,5 +1,20 @@
 const node = document.getElementById('app');
 
+const posts = [
+	{
+		id: 1,
+		title: "Post One"
+	},
+	{
+		id: 2,
+		title: "Whatever"
+	},
+	{
+		id: 3,
+		title: "Happy Thanksgiving!"
+	}
+]
+
 const NavBar = (props) => (
 	<div id="navBar">
 		<ul>
@@ -30,15 +45,39 @@ const AddPost = (props) => (
 	</div>
 );
 
-const PostList = (props) => (
-	<div>List of posts will go here.</div>
+const Post = (props) => (
+	<div>
+		<div>
+			<p>...username here...</p>
+		</div>
+		<h1>{props.title}</h1>
+		<div>...post body here...</div>
+		<div>
+			<p>notes</p>
+			<p>share</p>
+			<p>reblog</p>
+			<p>like</p>
+		</div>
+	</div>
+)
+
+const PostList = (props) => {
+	const postRows = props.posts.map((post) => (<Post key={post.id} title={post.title}/>));
+	return (
+		<div>{postRows}</div>
+	);
+};
+
+const Footer = (props) => (
+	<a href="#">About</a>
 );
 
 const App = (props) => (
 	<div>
 		<NavBar />
 		<AddPost />
-		<PostList />
+		<PostList posts={posts}/>
+		<Footer />
 	</div>
 );
 

@@ -2,6 +2,17 @@
 
 var node = document.getElementById('app');
 
+var posts = [{
+	id: 1,
+	title: "Post One"
+}, {
+	id: 2,
+	title: "Whatever"
+}, {
+	id: 3,
+	title: "Happy Thanksgiving!"
+}];
+
 var NavBar = function NavBar(props) {
 	return React.createElement(
 		"div",
@@ -87,11 +98,72 @@ var AddPost = function AddPost(props) {
 	);
 };
 
-var PostList = function PostList(props) {
+var Post = function Post(props) {
 	return React.createElement(
 		"div",
 		null,
-		"List of posts will go here."
+		React.createElement(
+			"div",
+			null,
+			React.createElement(
+				"p",
+				null,
+				"...username here..."
+			)
+		),
+		React.createElement(
+			"h1",
+			null,
+			props.title
+		),
+		React.createElement(
+			"div",
+			null,
+			"...post body here..."
+		),
+		React.createElement(
+			"div",
+			null,
+			React.createElement(
+				"p",
+				null,
+				"notes"
+			),
+			React.createElement(
+				"p",
+				null,
+				"share"
+			),
+			React.createElement(
+				"p",
+				null,
+				"reblog"
+			),
+			React.createElement(
+				"p",
+				null,
+				"like"
+			)
+		)
+	);
+};
+
+var PostList = function PostList(props) {
+	var postRows = props.posts.map(function (post) {
+		return React.createElement(Post, { key: post.id, title: post.title });
+	});
+	return React.createElement(
+		"div",
+		null,
+		postRows
+	);
+};
+
+var Footer = function Footer(props) {
+	return React.createElement(
+		"a",
+		{ href: "#" },
+		"About"
 	);
 };
 
@@ -101,7 +173,8 @@ var App = function App(props) {
 		null,
 		React.createElement(NavBar, null),
 		React.createElement(AddPost, null),
-		React.createElement(PostList, null)
+		React.createElement(PostList, { posts: posts }),
+		React.createElement(Footer, null)
 	);
 };
 

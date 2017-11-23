@@ -4,6 +4,7 @@
   "description": "MERN tumblr clone",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "sass": "sass --watch src/main.scss:static/main.css",
     "compile": "babel src --presets react,env --out-dir static",
     "watch": "babel src --presets react,env --out-dir static --watch",

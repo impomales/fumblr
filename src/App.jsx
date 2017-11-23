@@ -1,20 +1,5 @@
 const node = document.getElementById('app');
 
-const posts = [
-	{
-		id: 1,
-		title: "Post One"
-	},
-	{
-		id: 2,
-		title: "Whatever"
-	},
-	{
-		id: 3,
-		title: "Happy Thanksgiving!"
-	}
-]
-
 const NavBar = (props) => (
 	<div id="navBar">
 		<img id="logo" src="./photos/fumblr.png" alt="logo" />
@@ -49,12 +34,12 @@ const AddPost = (props) => (
 const Post = (props) => (
 	<div className="panel">
 		<div>
-			<p>...username here...</p>
+			<p>{props.posted_by}</p>
 		</div>
 		<h1>{props.title}</h1>
-		<div>...post body here...</div>
+		<div>{props.data}</div>
 		<div>
-			<p>notes</p>
+			<p>{props.notes}</p>
 			<p>share</p>
 			<p>reblog</p>
 			<p>like</p>
@@ -63,7 +48,13 @@ const Post = (props) => (
 )
 
 const PostList = (props) => {
-	const postRows = props.posts.map((post) => (<Post key={post.id} title={post.title}/>));
+	const postRows = props.posts.map((post) => (
+		<Post 	key={post.id} 
+				title={post.title}
+				posted_by={post.posted_by}
+				data={post.data}
+				notes={post.notes}/>)
+	);
 	return (
 		<div>{postRows}</div>
 	);
@@ -73,13 +64,38 @@ const Footer = (props) => (
 	<a href="#">About</a>
 );
 
-const App = (props) => (
-	<div>
-		<NavBar />
-		<AddPost />
-		<PostList posts={posts}/>
-		<Footer />
-	</div>
-);
+class App extends React.Component {
+	constructor() {
+		super();
+
+		this.state = { posts: [] };
+	}
+
+	componentDidMount() {
+		this.loadData();
+	}
+
+	loadData() {
+		fetch('/api/posts')
+			.then(response => response.json())
+			.then(data => {
+				console.log("Total number of records: " + data._metadata.count);
+				this.setState({ posts: data.records });
+			}).catch(err => {
+				console.log(err);
+			});
+	}
+
+	render() {
+		return (
+			<div>
+				<NavBar />
+				<AddPost />
+				<PostList posts={this.state.posts}/>
+				<Footer />
+			</div>
+		);
+	}
+}
 
 ReactDOM.render(<App />, node);

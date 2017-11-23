@@ -1,17 +1,14 @@
 "use strict";
 
-var node = document.getElementById('app');
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var posts = [{
-	id: 1,
-	title: "Post One"
-}, {
-	id: 2,
-	title: "Whatever"
-}, {
-	id: 3,
-	title: "Happy Thanksgiving!"
-}];
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var node = document.getElementById('app');
 
 var NavBar = function NavBar(props) {
 	return React.createElement(
@@ -97,7 +94,7 @@ var Post = function Post(props) {
 			React.createElement(
 				"p",
 				null,
-				"...username here..."
+				props.posted_by
 			)
 		),
 		React.createElement(
@@ -108,7 +105,7 @@ var Post = function Post(props) {
 		React.createElement(
 			"div",
 			null,
-			"...post body here..."
+			props.data
 		),
 		React.createElement(
 			"div",
@@ -116,7 +113,7 @@ var Post = function Post(props) {
 			React.createElement(
 				"p",
 				null,
-				"notes"
+				props.notes
 			),
 			React.createElement(
 				"p",
@@ -139,7 +136,11 @@ var Post = function Post(props) {
 
 var PostList = function PostList(props) {
 	var postRows = props.posts.map(function (post) {
-		return React.createElement(Post, { key: post.id, title: post.title });
+		return React.createElement(Post, { key: post.id,
+			title: post.title,
+			posted_by: post.posted_by,
+			data: post.data,
+			notes: post.notes });
 	});
 	return React.createElement(
 		"div",
@@ -156,15 +157,52 @@ var Footer = function Footer(props) {
 	);
 };
 
-var App = function App(props) {
-	return React.createElement(
-		"div",
-		null,
-		React.createElement(NavBar, null),
-		React.createElement(AddPost, null),
-		React.createElement(PostList, { posts: posts }),
-		React.createElement(Footer, null)
-	);
-};
+var App = function (_React$Component) {
+	_inherits(App, _React$Component);
+
+	function App() {
+		_classCallCheck(this, App);
+
+		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+		_this.state = { posts: [] };
+		return _this;
+	}
+
+	_createClass(App, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			this.loadData();
+		}
+	}, {
+		key: "loadData",
+		value: function loadData() {
+			var _this2 = this;
+
+			fetch('/api/posts').then(function (response) {
+				return response.json();
+			}).then(function (data) {
+				console.log("Total number of records: " + data._metadata.count);
+				_this2.setState({ posts: data.records });
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			return React.createElement(
+				"div",
+				null,
+				React.createElement(NavBar, null),
+				React.createElement(AddPost, null),
+				React.createElement(PostList, { posts: this.state.posts }),
+				React.createElement(Footer, null)
+			);
+		}
+	}]);
+
+	return App;
+}(React.Component);
 
 ReactDOM.render(React.createElement(App, null), node);

@@ -32,4 +32,4 @@ app.get('/api/posts', (req, res) => {
 	res.json({ _metadata: metadata, records: posts});
 });
 
-app.listen(8080, () => console.log('App is listening on port 8080'));
+app.listen(process.env.PORT, () => console.log('App is listening on port 8080'));

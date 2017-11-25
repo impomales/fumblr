@@ -59,30 +59,67 @@ var NavBar = function NavBar(props) {
 	);
 };
 
-var AddPost = function AddPost(props) {
-	return React.createElement(
-		"div",
-		{ className: "panel" },
-		React.createElement(
-			"form",
-			null,
-			React.createElement("input", { type: "text", name: "title", placeholder: "Title" }),
-			React.createElement("input", { type: "text", name: "data", placeholder: "Your text here..." }),
-			React.createElement("input", { type: "text", name: "tags", placeholder: "#tags" }),
-			React.createElement("hr", null),
-			React.createElement(
-				"button",
-				null,
-				"Close"
-			),
-			React.createElement(
-				"button",
-				null,
-				"Post"
-			)
-		)
-	);
-};
+var AddPost = function (_React$Component) {
+	_inherits(AddPost, _React$Component);
+
+	function AddPost() {
+		_classCallCheck(this, AddPost);
+
+		var _this = _possibleConstructorReturn(this, (AddPost.__proto__ || Object.getPrototypeOf(AddPost)).call(this));
+
+		_this.handleSubmit = _this.handleSubmit.bind(_this);
+		return _this;
+	}
+
+	_createClass(AddPost, [{
+		key: "handleSubmit",
+		value: function handleSubmit(e) {
+			e.preventDefault();
+
+			var form = document.forms.makePost;
+
+			var tagArr = form.tags.value.split(',');
+
+			this.props.addPost({
+				title: form.title.value,
+				data: form.data.value,
+				tags: tagArr
+			});
+
+			form.title.value = "";
+			form.data.value = "";
+			form.tags.value = "";
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			return React.createElement(
+				"div",
+				{ className: "panel" },
+				React.createElement(
+					"form",
+					{ name: "makePost", onSubmit: this.handleSubmit },
+					React.createElement("input", { type: "text", name: "title", placeholder: "Title" }),
+					React.createElement("input", { type: "text", name: "data", placeholder: "Your text here..." }),
+					React.createElement("input", { type: "text", name: "tags", placeholder: "#tags" }),
+					React.createElement("hr", null),
+					React.createElement(
+						"button",
+						{ type: "submit" },
+						"Post"
+					)
+				),
+				React.createElement(
+					"button",
+					null,
+					"Close"
+				)
+			);
+		}
+	}]);
+
+	return AddPost;
+}(React.Component);
 
 var User = function User(props) {
 	return React.createElement(
@@ -161,6 +198,11 @@ var Post = function Post(props) {
 		React.createElement(
 			"div",
 			null,
+			props.tags
+		),
+		React.createElement(
+			"div",
+			null,
 			React.createElement(
 				"p",
 				null,
@@ -191,6 +233,7 @@ var PostList = function PostList(props) {
 			title: post.title,
 			posted_by: post.posted_by,
 			data: post.data,
+			tags: post.tags.join(','),
 			notes: post.notes });
 	});
 	return React.createElement(
@@ -208,16 +251,18 @@ var Footer = function Footer(props) {
 	);
 };
 
-var App = function (_React$Component) {
-	_inherits(App, _React$Component);
+var App = function (_React$Component2) {
+	_inherits(App, _React$Component2);
 
 	function App() {
 		_classCallCheck(this, App);
 
-		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+		var _this2 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-		_this.state = { posts: [] };
-		return _this;
+		_this2.state = { posts: [] };
+
+		_this2.addPost = _this2.addPost.bind(_this2);
+		return _this2;
 	}
 
 	_createClass(App, [{
@@ -228,15 +273,39 @@ var App = function (_React$Component) {
 	}, {
 		key: "loadData",
 		value: function loadData() {
-			var _this2 = this;
+			var _this3 = this;
 
 			fetch('/api/posts').then(function (response) {
 				return response.json();
 			}).then(function (data) {
 				console.log("Total number of records: " + data._metadata.count);
-				_this2.setState({ posts: data.records });
+				_this3.setState({ posts: data.records });
 			}).catch(function (err) {
 				console.log(err);
+			});
+		}
+	}, {
+		key: "addPost",
+		value: function addPost(newPost) {
+			var _this4 = this;
+
+			fetch('/api/posts', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(newPost)
+			}).then(function (response) {
+				if (response.ok) {
+					response.json().then(function (data) {
+						var updatedList = _this4.state.posts.concat(data);
+						_this4.setState({ posts: updatedList });
+					});
+				} else {
+					response.json().then(function (err) {
+						alert(err.message);
+					});
+				}
+			}).catch(function (err) {
+				alert(err.message);
 			});
 		}
 	}, {
@@ -246,7 +315,7 @@ var App = function (_React$Component) {
 				"div",
 				null,
 				React.createElement(NavBar, null),
-				React.createElement(AddPost, null),
+				React.createElement(AddPost, { addPost: this.addPost }),
 				React.createElement(PostList, { posts: this.state.posts }),
 				React.createElement(Footer, null)
 			);

@@ -31,6 +31,21 @@ const AddPost = (props) => (
 	</div>
 );
 
+const User = (props) => (
+	<div>
+		<h1>User Blog Title</h1>
+		<h2>username</h2>
+		<p>desc</p>
+		<ul>
+			<li>Posts</li>
+			<li>Likes</li>
+			<li>Following</li>
+			<li>Ask me anything</li>
+			<li>Archive</li>
+		</ul>
+	</div>
+);
+
 const Post = (props) => (
 	<div className="panel">
 		<div>

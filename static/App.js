@@ -84,6 +84,57 @@ var AddPost = function AddPost(props) {
 	);
 };
 
+var User = function User(props) {
+	return React.createElement(
+		"div",
+		null,
+		React.createElement(
+			"h1",
+			null,
+			"User Blog Title"
+		),
+		React.createElement(
+			"h2",
+			null,
+			"username"
+		),
+		React.createElement(
+			"p",
+			null,
+			"desc"
+		),
+		React.createElement(
+			"ul",
+			null,
+			React.createElement(
+				"li",
+				null,
+				"Posts"
+			),
+			React.createElement(
+				"li",
+				null,
+				"Likes"
+			),
+			React.createElement(
+				"li",
+				null,
+				"Following"
+			),
+			React.createElement(
+				"li",
+				null,
+				"Ask me anything"
+			),
+			React.createElement(
+				"li",
+				null,
+				"Archive"
+			)
+		)
+	);
+};
+
 var Post = function Post(props) {
 	return React.createElement(
 		"div",

@@ -32,4 +32,16 @@ app.get('/api/posts', (req, res) => {
 	res.json({ _metadata: metadata, records: posts});
 });
 
+app.get('/api/posts/:id', (req, res) => {
+	const i = req.params.id;
+
+	if (i > 0 && i <= posts.length) res.json(posts[i - 1]);
+	else {
+		res.status(422).json({
+			message: "Invalid post ID"
+		});
+		return;
+	}
+})
+
 app.listen(process.env.PORT || 8080, () => console.log('App is listening on port 8080'));

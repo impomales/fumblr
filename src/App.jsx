@@ -93,7 +93,7 @@ const Post = (props) => (
 
 const PostList = (props) => {
 	const postRows = props.posts.map((post) => (
-		<Post 	key={post.id} 
+		<Post 	key={post._id} 
 				title={post.title}
 				posted_by={post.posted_by}
 				data={post.data}
@@ -124,12 +124,20 @@ class App extends React.Component {
 
 	loadData() {
 		fetch('/api/posts')
-			.then(response => response.json())
-			.then(data => {
-				console.log("Total number of records: " + data._metadata.count);
-				this.setState({ posts: data.records });
+			.then(response => {
+				if (response.ok) {
+					response.json().then(data => {
+						console.log("Total number of records: " + data._metadata.count);
+
+						this.setState({ posts: data.records });
+					});
+				} else {
+					response.json().then(err => {
+						alert(err.message);
+					});
+				}
 			}).catch(err => {
-				console.log(err);
+				alert(err.message);
 			});
 	}
 
@@ -148,7 +156,7 @@ class App extends React.Component {
 			} else {
 				response.json().then(err => {
 					alert(err.message);
-				})
+				});
 			}
 		}).catch(err => {
 			alert(err.message);

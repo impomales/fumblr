@@ -229,7 +229,7 @@ var Post = function Post(props) {
 
 var PostList = function PostList(props) {
 	var postRows = props.posts.map(function (post) {
-		return React.createElement(Post, { key: post.id,
+		return React.createElement(Post, { key: post._id,
 			title: post.title,
 			posted_by: post.posted_by,
 			data: post.data,
@@ -276,12 +276,19 @@ var App = function (_React$Component2) {
 			var _this3 = this;
 
 			fetch('/api/posts').then(function (response) {
-				return response.json();
-			}).then(function (data) {
-				console.log("Total number of records: " + data._metadata.count);
-				_this3.setState({ posts: data.records });
+				if (response.ok) {
+					response.json().then(function (data) {
+						console.log("Total number of records: " + data._metadata.count);
+
+						_this3.setState({ posts: data.records });
+					});
+				} else {
+					response.json().then(function (err) {
+						alert(err.message);
+					});
+				}
 			}).catch(function (err) {
-				console.log(err);
+				alert(err.message);
 			});
 		}
 	}, {

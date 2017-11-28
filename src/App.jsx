@@ -17,17 +17,60 @@ const NavBar = (props) => (
 	</div>
 );
 
-const AddPost = (props) => (
-	<div className="panel">
-		<form>
-			<input type="text" name="title" placeholder="Title" />
-		{/* this will vary depending on post type */}
-			<input type="text" name="data" placeholder="Your text here..." />
-			<input type="text" name="tags" placeholder="#tags" />
-			<hr />
-			<button>Close</button>
-			<button>Post</button>
-		</form>
+class AddPost extends React.Component {
+	constructor() {
+		super();
+
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
+
+	handleSubmit(e) {
+		e.preventDefault();
+
+		let form = document.forms.makePost;
+
+		const tagArr = form.tags.value.split(',');
+
+		this.props.addPost({
+			title: form.title.value,
+			data: form.data.value,
+			tags: tagArr
+		})
+
+		form.title.value = "";
+		form.data.value = "";
+		form.tags.value = "";
+	}
+
+	render() {
+		return (
+			<div className="panel">
+				<form name="makePost" onSubmit={this.handleSubmit}>
+					<input type="text" name="title" placeholder="Title" />
+				{/* this will vary depending on post type */}
+					<input type="text" name="data" placeholder="Your text here..." />
+					<input type="text" name="tags" placeholder="#tags" />
+					<hr />
+					<button type="submit">Post</button>
+				</form>
+				<button>Close</button>
+			</div>
+		);
+	}
+}
+	
+const User = (props) => (
+	<div>
+		<h1>User Blog Title</h1>
+		<h2>username</h2>
+		<p>desc</p>
+		<ul>
+			<li>Posts</li>
+			<li>Likes</li>
+			<li>Following</li>
+			<li>Ask me anything</li>
+			<li>Archive</li>
+		</ul>
 	</div>
 );
 
@@ -38,6 +81,7 @@ const Post = (props) => (
 		</div>
 		<h1>{props.title}</h1>
 		<div>{props.data}</div>
+		<div>{props.tags}</div>
 		<div>
 			<p>{props.notes}</p>
 			<p>share</p>
@@ -53,6 +97,7 @@ const PostList = (props) => {
 				title={post.title}
 				posted_by={post.posted_by}
 				data={post.data}
+				tags={post.tags.join(',')}
 				notes={post.notes}/>)
 	);
 	return (
@@ -69,6 +114,8 @@ class App extends React.Component {
 		super();
 
 		this.state = { posts: [] };
+
+		this.addPost = this.addPost.bind(this);
 	}
 
 	componentDidMount() {
@@ -86,11 +133,33 @@ class App extends React.Component {
 			});
 	}
 
+	addPost(newPost) {
+		fetch('/api/posts', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json'},
+			body: JSON.stringify(newPost)
+		})
+		.then(response => {
+			if (response.ok) {
+				response.json().then(data => {
+					const updatedList = this.state.posts.concat(data);
+					this.setState({ posts: updatedList });
+				});
+			} else {
+				response.json().then(err => {
+					alert(err.message);
+				})
+			}
+		}).catch(err => {
+			alert(err.message);
+		})
+	}
+
 	render() {
 		return (
 			<div>
 				<NavBar />
-				<AddPost />
+				<AddPost addPost={this.addPost}/>
 				<PostList posts={this.state.posts}/>
 				<Footer />
 			</div>
